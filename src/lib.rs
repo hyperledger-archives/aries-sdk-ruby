@@ -11,11 +11,13 @@ use indy::future::Future;
 ruby! {
     class IndyWallet {
         struct {
-            name: String
+            name: String,
+            handle: i32
         }
 
         def initialize(helix, name: String) {
-            IndyWallet { helix, name }
+            let handle = 0;
+            IndyWallet { helix, name, handle }
         }
 
         def create(&self) {
@@ -24,8 +26,20 @@ ruby! {
 
             wallet::create_wallet(&config, &credentials).wait().unwrap();
         }
-        def open(&self) {
+        def open(&mut self) {
+            let config = format!("{{\"id\":\"wallet{}\"}}", self.name);
+            let credentials = String::from("{\"key\":\"8dvfYSt5d1taSd6yJdpjq4emkwsPDDLYxkNFysFD2cZY\",\"key_derivation_method\":\"RAW\"}");
 
+            self.handle = wallet::open_wallet(&config, &credentials).wait().unwrap();
+        }
+        def close(&self) {
+            wallet::close_wallet(self.handle).wait().unwrap();
+        }
+        def delete(&self) {
+            let config = format!("{{\"id\":\"wallet{}\"}}", self.name);
+            let credentials = String::from("{\"key\":\"8dvfYSt5d1taSd6yJdpjq4emkwsPDDLYxkNFysFD2cZY\",\"key_derivation_method\":\"RAW\"}");
+
+            indy::wallet::delete_wallet(&config, &credentials).wait().unwrap();
         }
     }
     class IndyPool {
