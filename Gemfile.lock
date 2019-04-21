@@ -1,0 +1,25 @@
+PATH
+  remote: .
+  specs:
+    rindy (0.0.1)
+      helix_runtime (~> 0.7.5)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    helix_runtime (0.7.5)
+      rake (>= 10.0)
+      thor (>= 0.19.4, < 2.0)
+      tomlrb (~> 1.2.4)
+    rake (12.3.2)
+    thor (0.20.3)
+    tomlrb (1.2.8)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  rindy!
+
+BUNDLED WITH
+   1.16.5

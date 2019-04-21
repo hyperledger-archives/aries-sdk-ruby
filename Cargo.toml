@@ -1,0 +1,10 @@
+[package]
+name = "rindy"
+version = "0.1.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+helix = "0.7.5"
+indy = "1.6.7"
