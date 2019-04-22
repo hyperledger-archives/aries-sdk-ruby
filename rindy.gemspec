@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name         = 'rindy'
-  s.version      = '0.0.5'
+  s.version      = '0.0.8'
   s.authors      = ['John Callahan']
   s.summary      = "A Helix project"
   s.files        = Dir['{lib/**/*,[A-Z]*}']

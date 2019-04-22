@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rindy (0.0.4)
+    rindy (0.0.8)
       helix_runtime (~> 0.7.5)
 
 GEM
