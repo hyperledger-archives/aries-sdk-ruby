@@ -22,9 +22,11 @@ You *must* have rust installed.  Then, execute:
 
     $ bundle
 
+WARNING: You may have to wait a bit for the native extension to build the rindy gem.
+
 ## Usage
 
-Make sure you have LIBRARY_PATH=/your/path/indy-sdk/libindy/target/debug/ to reach indy-sdk toolkit.  You may have to wait a bit for the native extension to build the rindy gem.  To try out the gem, execute:
+To try out the gem, execute:
 
     $ bundle exec rails c
     > wallet = IndyWallet.new("mywallet")
