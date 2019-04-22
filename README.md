@@ -18,7 +18,11 @@ Then, add this line to your application's Gemfile:
 gem 'rindy', :github => "johncallahan/rindy"
 ```
 
-You *must* have rust installed.  Then, execute:
+You *must* have rust installed *and* set LIBRARY_PATH:
+
+    $ export LIBRARY_PATH=/your/path/to/indy-sdk/libindy/target/debug/
+
+See [these instructions](https://github.com/hyperledger/indy-sdk#installing-the-sdk) to install or build the Indy SDK.  Then, execute:
 
     $ bundle
 
