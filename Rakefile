@@ -1,2 +1,7 @@
 require 'bundler/setup'
-import 'lib/tasks/helix_runtime.rake'
+require 'helix_runtime/build_task'
+
+HelixRuntime::BuildTask.new do |t|
+end
+
+task :default => :build
