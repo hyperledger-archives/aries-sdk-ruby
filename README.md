@@ -6,30 +6,34 @@ A ruby wrapper for [indy-sdk](https://github.com/hyperledger/indy-sdk).
 
 ## Installation
 
-Clone this project.  You must have rust tools installed first.  Then, build and install the gem:
+Create a new rails application:
 
-    $ git clone https://github.com/johncallahan/rindy.git
-    $ cd rindy
-    $ rake build
-    $ gem build rindy.gemspec
-    $ gem install rindy-0.0.X.gem
-    $
+    $ rails new rindy-rails --skip-active-record
+    $ cd rindy-rails
+    $ 
 
-Add this line to your application's Gemfile:
+Then, add this line to your application's Gemfile:
 
 ```ruby
-gem 'rindy'
+gem 'rindy', :github => "johncallahan/rindy"
 ```
 
-And then execute:
+You *must* have rust installed.  Then, execute:
 
     $ bundle
 
 ## Usage
 
-Currently, only IndyWallet and IndyPool classes are implemented using helix.  Check your ~/.indy-client directory for existing wallet and pool files, then you can run the ruby tests:
+Make sure you have LIBRARY_PATH=/your/path/indy-sdk/libindy/target/debug/ to reach indy-sdk toolkit.  You may have to wait a bit for the native extension to build the rindy gem.  To try out the gem, execute:
 
-    $ rspec
+    $ bundle exec rails c
+    > wallet = IndyWallet.new("mywallet")
+    > wallet.create
+    > pool = IndyPool.new("mypool")
+    > pool.create
+    > 
+
+If you check ~/.indy_client/pool and ~/.indy_client/wallet directories, you should see the pool and wallet you created.
 
 ## Development
 
