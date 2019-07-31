@@ -1,0 +1,7 @@
+target
+tmp
+*.bundle
+*.so
+*.gem
+*~
+vendor/bundle
