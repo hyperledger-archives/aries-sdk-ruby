@@ -1,8 +1,16 @@
-# rindy
+# aries-sdk-ruby
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A ruby wrapper for [indy-sdk](https://github.com/hyperledger/indy-sdk).
+A ruby gem for [aries-sdk](https://github.com/hyperledger/aries-sdk).
+
+## Migration notice
+
+Aries Code Repositories are in the process of being migrated from various other locations, including Hyperledger Indy repositories where the Aries work was incubated. Some of the code requires refactoring work to split it from unrelated assets prior to migration.
+
+The status of these code migrations is under regular discussion on the #aries channel on chat.hyperledger.org and in the Aries Working Group weekly call. Please join us there to understand migration status and help identify places where help is needed.
+
+When the appropriate code is migrated to this repoisitory, this README file will be updated.
 
 ## Installation
 
