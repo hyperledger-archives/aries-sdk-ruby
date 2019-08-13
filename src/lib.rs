@@ -15,7 +15,7 @@ use std::io::Write;
 use std::path::PathBuf;
 
 ruby! {
-    class IndyWallet {
+    class AriesWallet {
         struct {
             name: String,
             handle: i32
@@ -23,7 +23,7 @@ ruby! {
 
         def initialize(helix, name: String) {
             let handle = 0;
-            IndyWallet { helix, name, handle }
+            AriesWallet { helix, name, handle }
         }
 
         def create(&self) {
@@ -49,7 +49,7 @@ ruby! {
         }
     }
 
-    class IndyPool {
+    class AriesPool {
         struct {
             name: String,
             handle: i32
@@ -59,7 +59,7 @@ ruby! {
             let handle = 0;
             const PROTOCOL_VERSION: usize = 2;
             pool::set_protocol_version(PROTOCOL_VERSION).wait().unwrap();
-            IndyPool { helix, name, handle }
+            AriesPool { helix, name, handle }
         }
         
         def create(&self) {

@@ -1,5 +1,5 @@
 [package]
-name = "rindy"
+name = "aries-sdk-ruby"
 version = "0.1.0"
 
 [lib]
