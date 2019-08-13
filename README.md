@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A ruby gem for [aries-sdk](https://github.com/hyperledger/aries-sdk).
+A [ruby gem](https://rubygems.org/gems/aries-sdk-ruby) for [aries-sdk](https://github.com/hyperledger/aries-sdk).
 
 ## Migration notice
 
@@ -16,14 +16,14 @@ When the appropriate code is migrated to this repoisitory, this README file will
 
 Create a new rails application:
 
-    $ rails new rindy-rails --skip-active-record
-    $ cd rindy-rails
+    $ rails new aries-sdk-ruby-rails --skip-active-record
+    $ cd aries-sdk-ruby-rails
     $ 
 
 Then, add this line to your application's Gemfile:
 
 ```ruby
-gem 'rindy'
+gem 'aries-sdk-ruby'
 ```
 
 You *must* have rust installed *and* set LIBRARY_PATH:
@@ -34,16 +34,16 @@ See [these instructions](https://github.com/hyperledger/indy-sdk#installing-the-
 
     $ bundle
 
-WARNING: You may have to wait a bit for the native extension to build the rindy gem.
+WARNING: You may have to wait a bit for the native extension to build the aries-sdk-ruby gem.
 
 ## Usage
 
 To try out the gem, execute:
 
     $ bundle exec rails c
-    > wallet = IndyWallet.new("mywallet")
+    > wallet = AriesWallet.new("mywallet")
     > wallet.create
-    > pool = IndyPool.new("mypool")
+    > pool = AriesPool.new("mypool")
     > pool.create
     > 
 
@@ -63,7 +63,7 @@ See [these instructions](https://github.com/hyperledger/indy-sdk#installing-the-
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/johncallahan/rindy.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hyperledger/aries-sdk-ruby.
 
 
 ## License
