@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name         = 'aries-sdk-ruby'
-  s.version      = '0.0.1'
+  s.version      = '0.0.2'
   s.authors      = ['John Callahan']
   s.summary      = "Ruby wrapper for aries-sdk"
   s.files        = `git ls-files -z`.split("\x0") - %w(.gitignore)
