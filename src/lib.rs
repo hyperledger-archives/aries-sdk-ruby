@@ -5,6 +5,7 @@ extern crate indyrs as indy;
 
 use indy::pool;
 use indy::wallet;
+use indy::did;
 use std::string::String;
 
 use indy::future::Future;
@@ -79,6 +80,42 @@ ruby! {
             pool::delete_pool_ledger(&self.name).wait().unwrap();
         }
     }
+
+    class AriesDID {
+        struct {
+            seed: String,
+            did: String,
+            verkey: String
+        }
+
+        def initialize(helix, seed: String) {
+            let did: String = "".to_string();
+            let verkey: String = "".to_string();
+            AriesDID { helix, seed, did, verkey }
+        }
+
+        def create(&mut self, wallet: &AriesWallet) {
+            let (did,verkey) = create_did(wallet.handle, &self.seed);
+            self.did = did;
+            self.verkey = verkey;
+        }
+
+        def get_did(&self) -> String {
+            return self.did.to_string();
+        }
+
+        def get_verkey(&self) -> String {
+            return self.verkey.to_string();
+        }
+    }
+}
+
+fn create_did(wallet_handle: i32, seed: &str) -> (String,String) {
+    let first_json_seed = json!({
+        "seed":seed
+    }).to_string();
+    let (did,verkey) = did::create_and_store_my_did(wallet_handle, &first_json_seed).wait().unwrap();
+    return (did,verkey);
 }
 
 fn create_genesis_txn_file_for_pool(pool_name: &str) -> String {
