@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version      = '0.0.3'
   s.authors      = ['John Callahan']
   s.summary      = "Ruby wrapper for aries-sdk"
-  s.files        = "Cargo.lock Cargo.toml Gemfile Gemfile.lock"
+  s.files        = ["Cargo.lock", "Cargo.toml", "Gemfile", "Gemfile.lock"]
   s.files       += ["LICENSE", "README.md", "Rakefile", "aries-sdk-ruby.gemspec"]
   s.files       += ["extconf.rb", "lib/aries-sdk-ruby.rb", "lib/tasks/helix_runtime.rake"]
   s.files       += ["spec/aries-sdk-ruby_spec.rb", "spec/spec_helper.rb", "src/lib.rs"]
