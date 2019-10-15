@@ -6,6 +6,7 @@ extern crate indyrs as indy;
 use indy::pool;
 use indy::wallet;
 use indy::did;
+use indy::ledger;
 use std::string::String;
 
 use indy::future::Future;
@@ -83,19 +84,18 @@ ruby! {
 
     class AriesDID {
         struct {
-            seed: String,
             did: String,
             verkey: String
         }
 
-        def initialize(helix, seed: String) {
+        def initialize(helix) {
             let did: String = "".to_string();
             let verkey: String = "".to_string();
-            AriesDID { helix, seed, did, verkey }
+            AriesDID { helix, did, verkey }
         }
 
-        def create(&mut self, wallet: &AriesWallet) {
-            let (did,verkey) = create_did(wallet.handle, &self.seed);
+        def create(&mut self, wallet: &AriesWallet, value: String) {
+            let (did,verkey) = create_did(wallet.handle, &value);
             self.did = did;
             self.verkey = verkey;
         }
@@ -104,17 +104,26 @@ ruby! {
             return self.did.to_string();
         }
 
+        def build_nym(steward_did: &AriesDID, trustee_did: &AriesDID) -> String {
+            return ledger::build_nym_request(&steward_did.did, &trustee_did.did, Some(&trustee_did.verkey), None, Some("TRUST_ANCHOR")).wait().unwrap();
+        }
+
         def get_verkey(&self) -> String {
             return self.verkey.to_string();
         }
     }
+
+    class AriesJson {
+        def to_string(data: String) -> String {
+            let value: serde_json::Value = serde_json::from_str(&data).unwrap();
+            let result = value.to_string();
+            return result;
+        }
+    }
 }
 
-fn create_did(wallet_handle: i32, seed: &str) -> (String,String) {
-    let first_json_seed = json!({
-        "seed":seed
-    }).to_string();
-    let (did,verkey) = did::create_and_store_my_did(wallet_handle, &first_json_seed).wait().unwrap();
+fn create_did(wallet_handle: i32, value: &str) -> (String,String) {
+    let (did,verkey) = did::create_and_store_my_did(wallet_handle, value).wait().unwrap();
     return (did,verkey);
 }
 

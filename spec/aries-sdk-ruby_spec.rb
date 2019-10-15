@@ -6,6 +6,7 @@ describe "aries-sdk-ruby" do
     wallet.create
     wallet.delete
   end
+
   it "cannot create a duplicate wallet" do
     wallet1 = AriesWallet.new("WALLET2")
     wallet1.create
@@ -13,11 +14,13 @@ describe "aries-sdk-ruby" do
     expect{wallet2.create}.to raise_error(/Wallet with this name already exists/)
     wallet1.delete
   end
+
   it "can delete a wallet" do
     wallet = AriesWallet.new("WALLET3")
     wallet.create
     wallet.delete
   end
+
   it "can open and close a wallet" do
     wallet = AriesWallet.new("WALLET5")
     wallet.create
@@ -25,6 +28,7 @@ describe "aries-sdk-ruby" do
     wallet.close
     wallet.delete
   end
+
   it "cannot delete a wallet twice" do
     wallet = AriesWallet.new("WALLET6")
     wallet.create
@@ -37,6 +41,7 @@ describe "aries-sdk-ruby" do
     pool.create
     pool.delete
   end
+
   it "cannot create a duplicate pool" do
     pool1 = AriesPool.new("POOL2")
     pool1.create
@@ -44,11 +49,13 @@ describe "aries-sdk-ruby" do
     expect{pool2.create}.to raise_error(/Pool ledger config file with name/)
     pool1.delete
   end
+
   it "can delete a pool" do
     pool = AriesPool.new("POOL3")
     pool.create
     pool.delete
   end
+
   it "can open and close a pool" do
     pool = AriesPool.new("POOL5")
     pool.create
@@ -56,6 +63,7 @@ describe "aries-sdk-ruby" do
     pool.close
     pool.delete
   end
+
   it "cannot delete a pool twice" do
     pool = AriesPool.new("POOL6")
     pool.create
@@ -63,13 +71,47 @@ describe "aries-sdk-ruby" do
     expect{pool.delete}.to raise_error(/No such file or directory/)
   end
 
-  it "can create a DID" do
+  it "can create a Steward DID" do
     wallet = AriesWallet.new("WALLET0")
     wallet.create
     wallet.open
-    did = AriesDID.new("000000000000000000000000Steward1")
-    did.create(wallet)
+    did = AriesDID.new()
+    seed = AriesJson.to_string('{"seed":"000000000000000000000000Steward1"}')
+    did.create(wallet,seed)
     wallet.close
     wallet.delete
+  end
+
+  it "can create a Trust Anchor DID" do
+    wallet = AriesWallet.new("WALLET0")
+    wallet.create
+    wallet.open
+    did = AriesDID.new()
+    did.create(wallet,"{}")
+    wallet.close
+    wallet.delete
+  end
+
+  it "can create a NYM" do
+    steward_wallet = AriesWallet.new("WALLET_STEWARD")
+    steward_wallet.create
+    steward_wallet.open
+    steward_did = AriesDID.new()
+    seed = AriesJson.to_string('{"seed":"000000000000000000000000Steward1"}')
+    steward_did.create(steward_wallet,seed)
+
+    trustee_wallet = AriesWallet.new("WALLET_TRUSTEE")
+    trustee_wallet.create
+    trustee_wallet.open
+    trustee_did = AriesDID.new()
+    trustee_did.create(trustee_wallet,"{}")
+
+    nym = AriesDID.build_nym(steward_did,trustee_did)
+
+    trustee_wallet.close
+    trustee_wallet.delete
+
+    steward_wallet.close
+    steward_wallet.delete
   end
 end
