@@ -114,4 +114,19 @@ describe "aries-sdk-ruby" do
     steward_wallet.close
     steward_wallet.delete
   end
+
+  it "can create a schema" do
+    steward_wallet = AriesWallet.new("WALLET_STEWARD")
+    steward_wallet.create
+    steward_wallet.open
+    steward_did = AriesDID.new()
+    seed = AriesJson.to_string('{"seed":"000000000000000000000000Steward1"}')
+    steward_did.create(steward_wallet,seed)
+
+    cred = AriesCredential.new()
+    cred.issuer_create_schema(steward_did,"gvt","1.0",'["age","sex","height","name"]')
+
+    steward_wallet.close
+    steward_wallet.delete
+  end
 end

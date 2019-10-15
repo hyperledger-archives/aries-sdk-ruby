@@ -1,4 +1,4 @@
-#![recursion_limit="128"]
+#![recursion_limit="256"]
 #[macro_use] extern crate helix;
 #[macro_use] extern crate serde_json;
 extern crate indyrs as indy;
@@ -7,6 +7,7 @@ use indy::pool;
 use indy::wallet;
 use indy::did;
 use indy::ledger;
+use indy::anoncreds;
 use std::string::String;
 
 use indy::future::Future;
@@ -118,6 +119,25 @@ ruby! {
             let value: serde_json::Value = serde_json::from_str(&data).unwrap();
             let result = value.to_string();
             return result;
+        }
+    }
+
+    class AriesCredential {
+        struct {
+            schema_id: String,
+            schema_json: String
+        }
+
+        def initialize(helix) {
+            let schema_id: String = "".to_string();
+            let schema_json: String = "".to_string();
+            AriesCredential { helix, schema_id, schema_json }
+        }
+        
+        def issuer_create_schema(&mut self,issuer_did: &AriesDID, name: String, version: String, attributes: String) {
+            let (schema_id,schema_json) = anoncreds::issuer_create_schema(&issuer_did.did, &name, &version, &attributes).wait().unwrap();
+            self.schema_id = schema_id;
+            self.schema_json = schema_json;
         }
     }
 }
