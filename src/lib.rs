@@ -1,4 +1,4 @@
-#![recursion_limit="128"]
+#![recursion_limit="256"]
 #[macro_use] extern crate helix;
 #[macro_use] extern crate serde_json;
 extern crate indyrs as indy;
@@ -6,6 +6,8 @@ extern crate indyrs as indy;
 use indy::pool;
 use indy::wallet;
 use indy::did;
+use indy::ledger;
+use indy::anoncreds;
 use std::string::String;
 
 use indy::future::Future;
@@ -48,6 +50,9 @@ ruby! {
 
             wallet::delete_wallet(&config, &credentials).wait().unwrap();
         }
+        def get_handle(&self) -> i32 {
+            return self.handle
+        }
     }
 
     class AriesPool {
@@ -79,23 +84,25 @@ ruby! {
         def delete(&self) {
             pool::delete_pool_ledger(&self.name).wait().unwrap();
         }
+        def get_handle(&self) -> i32 {
+            return self.handle
+        }
     }
 
     class AriesDID {
         struct {
-            seed: String,
             did: String,
             verkey: String
         }
 
-        def initialize(helix, seed: String) {
+        def initialize(helix) {
             let did: String = "".to_string();
             let verkey: String = "".to_string();
-            AriesDID { helix, seed, did, verkey }
+            AriesDID { helix, did, verkey }
         }
 
-        def create(&mut self, wallet: &AriesWallet) {
-            let (did,verkey) = create_did(wallet.handle, &self.seed);
+        def create(&mut self, wallet: &AriesWallet, value: String) {
+            let (did,verkey) = create_did(wallet.handle, &value);
             self.did = did;
             self.verkey = verkey;
         }
@@ -104,17 +111,45 @@ ruby! {
             return self.did.to_string();
         }
 
+        def build_nym(steward_did: &AriesDID, trustee_did: &AriesDID) -> String {
+            return ledger::build_nym_request(&steward_did.did, &trustee_did.did, Some(&trustee_did.verkey), None, Some("TRUST_ANCHOR")).wait().unwrap();
+        }
+
         def get_verkey(&self) -> String {
             return self.verkey.to_string();
         }
     }
+
+    class AriesJson {
+        def to_string(data: String) -> String {
+            let value: serde_json::Value = serde_json::from_str(&data).unwrap();
+            let result = value.to_string();
+            return result;
+        }
+    }
+
+    class AriesCredential {
+        struct {
+            schema_id: String,
+            schema_json: String
+        }
+
+        def initialize(helix) {
+            let schema_id: String = "".to_string();
+            let schema_json: String = "".to_string();
+            AriesCredential { helix, schema_id, schema_json }
+        }
+        
+        def issuer_create_schema(&mut self,issuer_did: &AriesDID, name: String, version: String, attributes: String) {
+            let (schema_id,schema_json) = anoncreds::issuer_create_schema(&issuer_did.did, &name, &version, &attributes).wait().unwrap();
+            self.schema_id = schema_id;
+            self.schema_json = schema_json;
+        }
+    }
 }
 
-fn create_did(wallet_handle: i32, seed: &str) -> (String,String) {
-    let first_json_seed = json!({
-        "seed":seed
-    }).to_string();
-    let (did,verkey) = did::create_and_store_my_did(wallet_handle, &first_json_seed).wait().unwrap();
+fn create_did(wallet_handle: i32, value: &str) -> (String,String) {
+    let (did,verkey) = did::create_and_store_my_did(wallet_handle, value).wait().unwrap();
     return (did,verkey);
 }
 
