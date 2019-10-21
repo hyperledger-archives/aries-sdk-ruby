@@ -7,6 +7,24 @@ describe "aries-sdk-ruby" do
     wallet.delete
   end
 
+  it "can find an existing wallet" do
+    wallet = AriesWallet.new("WALLETX")
+    wallet.create
+    wallet.open
+    wallet.close
+    new_wallet = AriesWallet.new("WALLETX")
+    # no create needed here
+    new_wallet.open
+    new_wallet.close
+    new_wallet.delete
+  end
+
+  it "cannot find a non-existent wallet" do
+    wallet = AriesWallet.new("NOSUCHWALLET")
+    # no create needed here
+    expect{wallet.open}.to raise_error(/Wallet not found/)
+  end
+
   it "cannot create a duplicate wallet" do
     wallet1 = AriesWallet.new("WALLET2")
     wallet1.create
@@ -62,6 +80,20 @@ describe "aries-sdk-ruby" do
     pool.open
     pool.close
     pool.delete
+  end
+
+  it "can open an existing pool" do
+    pool = AriesPool.new("POOLX")
+    pool.create
+    new_pool = AriesPool.new("POOLX")
+    new_pool.open
+    new_pool.close
+    new_pool.delete
+  end
+
+  it "cannot open a non-existent pool" do
+    pool = AriesPool.new("NOSUCHPOOL")
+    expect{pool.open}.to raise_error(/Pool is not created for name/)
   end
 
   it "cannot delete a pool twice" do

@@ -50,6 +50,9 @@ ruby! {
 
             wallet::delete_wallet(&config, &credentials).wait().unwrap();
         }
+        def get_handle(&self) -> i32 {
+            return self.handle
+        }
     }
 
     class AriesPool {
@@ -80,6 +83,9 @@ ruby! {
         }
         def delete(&self) {
             pool::delete_pool_ledger(&self.name).wait().unwrap();
+        }
+        def get_handle(&self) -> i32 {
+            return self.handle
         }
     }
 
