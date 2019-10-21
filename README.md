@@ -77,6 +77,10 @@ Bump the gem version number up in the gemspec file, then:
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/hyperledger/aries-sdk-ruby.
 
+## Example
+
+A sample rails app is available [here](https://github.com/johncallahan/aries-rails)
+
 
 ## License
 
