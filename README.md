@@ -65,6 +65,7 @@ See [these instructions](https://github.com/hyperledger/indy-sdk#installing-the-
 
 Bump the gem version number up in the gemspec file, then:
 
+    $ bundle
     $ gem build aries-sdk-ruby.gemspec
     Successfully built RubyGem
     Name: aries-sdk-ruby
