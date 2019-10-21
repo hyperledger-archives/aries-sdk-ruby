@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name         = 'aries-sdk-ruby'
-  s.version      = '0.0.4'
+  s.version      = '0.0.5'
   s.authors      = ['John Callahan']
   s.summary      = "Ruby wrapper for aries-sdk"
   s.files        = ["Cargo.lock", "Cargo.toml", "Gemfile", "Gemfile.lock"]
