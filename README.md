@@ -81,6 +81,10 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/hyperl
 
 A sample rails app is available [here](https://github.com/johncallahan/aries-rails)
 
+## Changelog
+
+* 0.0.8
+** Support for AriesPool::sign_and_submit
 
 ## License
 
