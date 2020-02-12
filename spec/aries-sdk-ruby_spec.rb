@@ -161,4 +161,79 @@ describe "aries-sdk-ruby" do
     steward_wallet.close
     steward_wallet.delete
   end
+
+  it "can fetch key for DID" do
+    pool = AriesPool.new("POOLX1")
+    pool.create
+    pool.open
+
+    wallet = AriesWallet.new("WALLET_STEWARD")
+    wallet.create
+    wallet.open
+    steward_did = AriesDID.new()
+    seed = AriesJson.to_string('{"seed":"000000000000000000000000Steward1"}')
+    steward_did.create(wallet,seed)
+
+    trustee_did = AriesDID.new()
+    trustee_did.create(wallet,"{}")
+#    puts trustee_did.get_verkey
+
+    otherWallet = AriesWallet.new("WALLETX1")
+    otherWallet.create
+    otherWallet.open
+
+    nym = AriesDID.build_nym(steward_did,trustee_did)
+#    puts nym
+    ssresult = steward_did.sign_and_submit_request(pool,wallet,nym)
+#    puts ssresult
+
+    verkey = pool.key_for_did(otherWallet,trustee_did)
+    expect(verkey).to eq(trustee_did.get_verkey)
+
+    wallet.close
+    wallet.delete
+
+    otherWallet.close
+    otherWallet.delete
+
+    pool.close
+    pool.delete
+  end
+
+  it "cannot fetch key for DID" do
+    pool = AriesPool.new("POOLX1")
+    pool.create
+    pool.open
+
+    wallet = AriesWallet.new("WALLET_STEWARD")
+    wallet.create
+    wallet.open
+    steward_did = AriesDID.new()
+    seed = AriesJson.to_string('{"seed":"000000000000000000000000Steward1"}')
+    steward_did.create(wallet,seed)
+
+    trustee_did = AriesDID.new()
+    trustee_did.create(wallet,"{}")
+#    puts trustee_did.get_verkey
+
+    otherWallet = AriesWallet.new("WALLETX1")
+    otherWallet.create
+    otherWallet.open
+
+    nym = AriesDID.build_nym(steward_did,trustee_did)
+#    puts nym
+
+#    forget to sign and submit on the ledger here on purpose
+
+    expect{pool.key_for_did(otherWallet,trustee_did)}.to raise_error(/Wallet item not found/)
+
+    wallet.close
+    wallet.delete
+
+    otherWallet.close
+    otherWallet.delete
+
+    pool.close
+    pool.delete
+  end
 end
