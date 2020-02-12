@@ -75,6 +75,11 @@ ruby! {
             });
             pool::create_pool_ledger_config(&self.name, Some(&pool_config.to_string())).wait().unwrap();
         }
+
+	def key_for_did(&self, wallet: &AriesWallet, value: &AriesDID) -> String {
+	    return did::key_for_did(self.handle, wallet.handle, &value.did).wait().unwrap();
+	}
+
         def open(&mut self) {
             self.handle = pool::open_pool_ledger(&self.name, None).wait().unwrap();
         }
@@ -114,6 +119,10 @@ ruby! {
         def build_nym(steward_did: &AriesDID, trustee_did: &AriesDID) -> String {
             return ledger::build_nym_request(&steward_did.did, &trustee_did.did, Some(&trustee_did.verkey), None, Some("TRUST_ANCHOR")).wait().unwrap();
         }
+
+	def sign_and_submit_request(&self,pool: &AriesPool, wallet: &AriesWallet, request: String) -> String {
+	    return ledger::sign_and_submit_request(pool.handle, wallet.handle, &self.did, &request).wait().unwrap();
+	}
 
         def get_verkey(&self) -> String {
             return self.verkey.to_string();
